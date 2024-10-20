@@ -86,11 +86,24 @@ let quotes = [
     }
   }
   
+  // Show a random quote
+  function showRandomQuote() {
+    const randomIndex = Math.floor(Math.random() * quotes.length);
+    const randomQuote = quotes[randomIndex];
+    
+    // Display the random quote
+    const quoteDisplay = document.getElementById('quoteDisplay');
+    quoteDisplay.innerHTML = `<p>${randomQuote.text}</p>`;
+  }
+  
   // Initialize the application
   function init() {
     loadQuotes();
     populateCategories();
     filterQuotes();
+  
+    // Event listener for the "Show New Quote" button
+    document.getElementById('newQuote').addEventListener('click', showRandomQuote);
   }
   
   // Call the init function on page load
