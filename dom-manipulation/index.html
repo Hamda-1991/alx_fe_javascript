@@ -7,10 +7,16 @@
   </head>
   <body>
     <h1>Dynamic Quote Generator</h1>
-    <div id="quoteDisplay"></div>
+
+    <!-- Display the quote here -->
+    <div id="quoteDisplay">
+      <p>Your quote will appear here.</p>
+    </div>
+
+    <!-- Button to show a new random quote -->
     <button id="newQuote">Show New Quote</button>
 
-    <!-- Form to add new quotes -->
+    <!-- Form to add a new quote -->
     <div>
       <input id="newQuoteText" type="text" placeholder="Enter a new quote" />
       <input
@@ -21,6 +27,8 @@
       <button onclick="addQuote()">Add Quote</button>
     </div>
 
-    <script src="./script.js"></script>
+    <input type="file" id="importFile" accept=".json" />
+
+    <script src="script.js"></script>
   </body>
 </html>
