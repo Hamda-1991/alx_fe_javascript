@@ -92,4 +92,18 @@ function importFromJsonFile(event) {
   importInput.accept = '.json';
   importInput.onchange = importFromJsonFile;
   document.body.appendChild(importInput);
-      
+  
+  function exportQuotesToJson() {
+    const dataStr = JSON.stringify(quotes, null, 2);  // Convert quotes array to JSON string
+    const blob = new Blob([dataStr], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+  
+    // Create a download link
+    const downloadLink = document.createElement('a');
+    downloadLink.href = url;
+    downloadLink.download = 'quotes.json';  // Name of the downloaded file
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+    document.body.removeChild(downloadLink);  // Clean up the DOM
+  }
+  
