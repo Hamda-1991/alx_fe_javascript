@@ -8,7 +8,13 @@
   <body>
     <h1>Dynamic Quote Generator</h1>
 
-    <!-- Display the quote here -->
+    <!-- Category filter dropdown -->
+    <select id="categoryFilter" onchange="filterQuotes()">
+      <option value="all">All Categories</option>
+      <!-- Categories will be dynamically populated here -->
+    </select>
+
+    <!-- Display the filtered quotes here -->
     <div id="quoteDisplay">
       <p>Your quote will appear here.</p>
     </div>
@@ -40,7 +46,6 @@
       Export Quotes
     </button>
 
-    <!-- The JavaScript file where DOM manipulation is handled -->
     <script src="script.js"></script>
   </body>
 </html>
