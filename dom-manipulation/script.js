@@ -119,6 +119,14 @@ function filterQuotesByCategory(category) {
   displayQuotes(); // Display quotes based on the selected category
 }
 
+// Event listener for category filter change
+document.getElementById("categoryFilter").addEventListener("change", (event) => {
+  filterQuotesByCategory(event.target.value);
+});
+
+// Event listener for random quote button
+document.getElementById("randomQuoteBtn").addEventListener("click", displayRandomQuote);
+
 // Initialize application
 loadQuotes();
 displayQuotes();
