@@ -92,7 +92,7 @@ function displayQuotes() {
 }
 
 // Display a random quote
-function displayRandomQuote() {
+function showRandomQuote() {
   if (quotes.length === 0) return;
   const randomIndex = Math.floor(Math.random() * quotes.length);
   const randomQuote = quotes[randomIndex];
@@ -125,7 +125,7 @@ document.getElementById("categoryFilter").addEventListener("change", (event) => 
 });
 
 // Event listener for random quote button
-document.getElementById("randomQuoteBtn").addEventListener("click", displayRandomQuote);
+document.getElementById("randomQuoteBtn").addEventListener("click", showRandomQuote);
 
 // Export quotes to JSON file using Blob
 function exportQuotes() {
