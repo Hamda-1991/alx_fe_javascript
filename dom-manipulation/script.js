@@ -1,6 +1,6 @@
 const serverUrl = 'https://jsonplaceholder.typicode.com/posts';
 let quotes = [];
-let selectedCategory = "All"; // Track the currently selected category
+let selectedCategory = "All";
 
 // Load existing quotes from local storage
 function loadQuotes() {
@@ -21,7 +21,7 @@ async function fetchQuotesFromServer() {
 
     const transformedQuotes = serverQuotes.map(item => ({
       text: item.title,
-      category: "General" // Default category for mock data
+      category: "General" 
     }));
 
     return transformedQuotes;
@@ -115,8 +115,8 @@ function populateCategories() {
 
 // Filter quotes by category
 function filterQuotesByCategory(category) {
-  selectedCategory = category; // Update selected category
-  displayQuotes(); // Display quotes based on the selected category
+  selectedCategory = category;
+  displayQuotes();
 }
 
 // Event listener for category filter change
@@ -126,6 +126,26 @@ document.getElementById("categoryFilter").addEventListener("change", (event) => 
 
 // Event listener for random quote button
 document.getElementById("randomQuoteBtn").addEventListener("click", displayRandomQuote);
+
+// Export quotes to JSON file using Blob
+function exportQuotes() {
+  const data = JSON.stringify(quotes, null, 2);
+  const blob = new Blob([data], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'quotes.json';
+  document.body.appendChild(a);
+  a.click();
+
+  // Clean up
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+// Event listener for export button
+document.getElementById("exportBtn").addEventListener("click", exportQuotes);
 
 // Initialize application
 loadQuotes();
