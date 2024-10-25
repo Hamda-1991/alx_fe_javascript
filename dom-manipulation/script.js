@@ -1,6 +1,5 @@
-// URL of the mock API
 const serverUrl = 'https://jsonplaceholder.typicode.com/posts';
-let quotes = []; // Array to hold quotes
+let quotes = [];
 
 // Load existing quotes from local storage
 function loadQuotes() {
@@ -13,16 +12,15 @@ function saveQuotes() {
   localStorage.setItem('quotes', JSON.stringify(quotes));
 }
 
-// Simulate fetching quotes from a server
+// Fetch quotes from the server
 async function fetchQuotesFromServer() {
   try {
     const response = await fetch(serverUrl);
     const serverQuotes = await response.json();
 
-    // Transform API data to quote structure
     const transformedQuotes = serverQuotes.map(item => ({
       text: item.title,
-      category: "General" // Example default category for mock data
+      category: "General"
     }));
 
     return transformedQuotes;
@@ -31,7 +29,7 @@ async function fetchQuotesFromServer() {
   }
 }
 
-// Simulate posting new quotes to the server
+// Post new quotes to the server
 async function postQuoteToServer(quote) {
   try {
     const response = await fetch(serverUrl, {
@@ -49,31 +47,25 @@ async function postQuoteToServer(quote) {
   }
 }
 
-// Periodically fetch quotes from the server and sync with local storage
+// Sync quotes with the server
 function syncQuotesWithServer() {
   fetchQuotesFromServer().then(serverQuotes => {
     if (serverQuotes) {
       resolveConflicts(serverQuotes);
 
-      // Merge server quotes with local quotes
       quotes = [...new Set([...quotes, ...serverQuotes])];
       saveQuotes();
-      displayQuotes(); // Refresh displayed quotes
+      displayQuotes();
       alert("Quotes synced with server!");
     }
   });
 }
 
-// Conflict resolution: Server data takes precedence
+// Resolve conflicts with server data
 function resolveConflicts(serverQuotes) {
-  const localQuotes = quotes;
-  const conflictQuotes = [];
-
-  serverQuotes.forEach(serverQuote => {
-    if (!localQuotes.some(localQuote => localQuote.text === serverQuote.text)) {
-      conflictQuotes.push(serverQuote);
-    }
-  });
+  const conflictQuotes = serverQuotes.filter(serverQuote => 
+    !quotes.some(localQuote => localQuote.text === serverQuote.text)
+  );
 
   if (conflictQuotes.length > 0) {
     alert(`New quotes added from server: ${conflictQuotes.length}`);
@@ -85,7 +77,7 @@ function resolveConflicts(serverQuotes) {
 // Display quotes on the page
 function displayQuotes(filteredQuotes = quotes) {
   const quoteContainer = document.getElementById("quoteContainer");
-  quoteContainer.innerHTML = ""; // Clear existing content
+  quoteContainer.innerHTML = "";
 
   filteredQuotes.forEach(quote => {
     const quoteElement = document.createElement("p");
@@ -94,9 +86,18 @@ function displayQuotes(filteredQuotes = quotes) {
   });
 }
 
-// Populate category options in a dropdown
+// Display a random quote
+function displayRandomQuote() {
+  if (quotes.length === 0) return;
+  const randomIndex = Math.floor(Math.random() * quotes.length);
+  const randomQuote = quotes[randomIndex];
+  const quoteDisplay = document.getElementById("quoteDisplay");
+  quoteDisplay.textContent = `${randomQuote.category}: ${randomQuote.text}`;
+}
+
+// Populate category dropdown
 function populateCategories() {
-  const categories = ["General", "Motivational", "Funny"]; // Example categories
+  const categories = ["General", "Motivational", "Funny"];
   const categoryFilter = document.getElementById("categoryFilter");
 
   categories.forEach(category => {
@@ -107,17 +108,16 @@ function populateCategories() {
   });
 }
 
-// Filter quotes by selected category
+// Filter quotes by category
 function filterQuotesByCategory(category) {
   const filteredQuotes = category === "All"
     ? quotes
     : quotes.filter(quote => quote.category === category);
 
-  displayQuotes(filteredQuotes); // Display only filtered quotes
+  displayQuotes(filteredQuotes);
 }
 
-// Initialize the application
-loadQuotes(); // Load from local storage on start
-displayQuotes(); // Display quotes on start
-populateCategories(); // Populate filter options on start
-setInterval(syncQuotesWithServer, 10000); // Sync every 10 seconds
+loadQuotes();
+displayQuotes();
+populateCategories();
+setInterval(syncQuotesWithServer, 10000);
