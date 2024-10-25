@@ -21,7 +21,7 @@ async function fetchQuotesFromServer() {
 
     const transformedQuotes = serverQuotes.map(item => ({
       text: item.title,
-      category: "General" 
+      category: "General"
     }));
 
     return transformedQuotes;
@@ -139,13 +139,36 @@ function exportQuotes() {
   document.body.appendChild(a);
   a.click();
 
-  // Clean up
   document.body.removeChild(a);
   URL.revokeObjectURL(url);
 }
 
+// Import quotes from JSON file using FileReader
+function importQuotes(event) {
+  const file = event.target.files[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      try {
+        const importedQuotes = JSON.parse(e.target.result);
+        quotes = [...quotes, ...importedQuotes];
+        saveQuotes();
+        displayQuotes();
+        alert("Quotes imported successfully!");
+      } catch (error) {
+        console.error("Failed to import quotes", error);
+        alert("Invalid file format. Please upload a valid JSON file.");
+      }
+    };
+    reader.readAsText(file);
+  }
+}
+
 // Event listener for export button
 document.getElementById("exportBtn").addEventListener("click", exportQuotes);
+
+// Event listener for import file input
+document.getElementById("importFile").addEventListener("change", importQuotes);
 
 // Initialize application
 loadQuotes();
