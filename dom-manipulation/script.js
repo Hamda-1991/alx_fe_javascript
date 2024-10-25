@@ -100,6 +100,50 @@ function showRandomQuote() {
   quoteDisplay.textContent = `${randomQuote.category}: ${randomQuote.text}`;
 }
 
+// Create a form for adding new quotes
+function createAddQuoteForm() {
+  const formContainer = document.getElementById("formContainer");
+  const form = document.createElement("form");
+
+  const textInput = document.createElement("input");
+  textInput.type = "text";
+  textInput.placeholder = "Enter your quote";
+  textInput.required = true;
+
+  const categoryInput = document.createElement("select");
+  const categories = ["General", "Motivational", "Funny"];
+  categories.forEach(category => {
+    const option = document.createElement("option");
+    option.value = category;
+    option.textContent = category;
+    categoryInput.appendChild(option);
+  });
+
+  const submitButton = document.createElement("button");
+  submitButton.textContent = "Add Quote";
+  submitButton.type = "submit";
+
+  form.appendChild(textInput);
+  form.appendChild(categoryInput);
+  form.appendChild(submitButton);
+  
+  // Add an event listener for the form submission
+  form.addEventListener("submit", (event) => {
+    event.preventDefault();
+    const newQuote = {
+      text: textInput.value,
+      category: categoryInput.value
+    };
+    quotes.push(newQuote);
+    saveQuotes();
+    displayQuotes();
+    postQuoteToServer(newQuote);
+    form.reset(); // Clear the form after submission
+  });
+
+  formContainer.appendChild(form);
+}
+
 // Populate category dropdown
 function populateCategories() {
   const categories = ["All", "General", "Motivational", "Funny"];
@@ -174,4 +218,5 @@ document.getElementById("importFile").addEventListener("change", importQuotes);
 loadQuotes();
 displayQuotes();
 populateCategories();
+createAddQuoteForm(); // Create the form for adding quotes
 setInterval(syncQuotesWithServer, 10000);
