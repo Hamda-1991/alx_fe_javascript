@@ -1,5 +1,6 @@
 const serverUrl = 'https://jsonplaceholder.typicode.com/posts';
 let quotes = [];
+let selectedCategory = "All"; // Track the currently selected category
 
 // Load existing quotes from local storage
 function loadQuotes() {
@@ -20,7 +21,7 @@ async function fetchQuotesFromServer() {
 
     const transformedQuotes = serverQuotes.map(item => ({
       text: item.title,
-      category: "General"
+      category: "General" // Default category for mock data
     }));
 
     return transformedQuotes;
@@ -74,10 +75,14 @@ function resolveConflicts(serverQuotes) {
   }
 }
 
-// Display quotes on the page
-function displayQuotes(filteredQuotes = quotes) {
+// Display quotes based on selected category
+function displayQuotes() {
   const quoteContainer = document.getElementById("quoteContainer");
   quoteContainer.innerHTML = "";
+
+  const filteredQuotes = selectedCategory === "All" 
+    ? quotes 
+    : quotes.filter(quote => quote.category === selectedCategory);
 
   filteredQuotes.forEach(quote => {
     const quoteElement = document.createElement("p");
@@ -97,7 +102,7 @@ function displayRandomQuote() {
 
 // Populate category dropdown
 function populateCategories() {
-  const categories = ["General", "Motivational", "Funny"];
+  const categories = ["All", "General", "Motivational", "Funny"];
   const categoryFilter = document.getElementById("categoryFilter");
 
   categories.forEach(category => {
@@ -110,13 +115,11 @@ function populateCategories() {
 
 // Filter quotes by category
 function filterQuotesByCategory(category) {
-  const filteredQuotes = category === "All"
-    ? quotes
-    : quotes.filter(quote => quote.category === category);
-
-  displayQuotes(filteredQuotes);
+  selectedCategory = category; // Update selected category
+  displayQuotes(); // Display quotes based on the selected category
 }
 
+// Initialize application
 loadQuotes();
 displayQuotes();
 populateCategories();
